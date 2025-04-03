@@ -1,4 +1,4 @@
-name: Hello World CI Workflow
+name: Deploy Python Script Output to Web
 
 # Trigger workflow on push or pull request to the main branch
 on:
@@ -25,8 +25,23 @@ jobs:
         with:
           python-version: '3.8'
 
-      # Step 3: Run the Hello World script
+      # Step 3: Run the Hello World script and capture the output
       - name: Run Hello World script
         run: |
-          python hello_world.py > output.txt  # Capture the output to a file
-          cat output.txt  # Display output in logs for verification
+          python hello_world.py > output.txt  # Capture the script output to a file
+          cat output.txt  # Print output in logs for verification
+
+      # Step 4: Create an HTML page to display the output
+      - name: Create HTML page to show output
+        run: |
+          mkdir -p output  # Create a folder for the output
+          echo "<html><body><h1>Hello World from GitHub Actions!</h1><pre>$(cat output.txt)</pre></body></html>" > output/index.html  # Create an HTML file
+
+      # Step 5: Deploy to GitHub Pages using the GitHub Pages Deploy Action
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4  # Use the latest stable version
+        with:
+          branch: gh-pages  # The branch to deploy to
+          folder: output    # The folder containing the generated HTML file
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use the GitHub token stored in secrets
