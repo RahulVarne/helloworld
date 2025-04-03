@@ -41,7 +41,8 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages  # The branch to deploy to
-          folder: output    # Folder containing the `index.html` file
+          branch: gh-pages
+          folder: output
+          force: true  # Force push to resolve any conflicts
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use the custom token or default GITHUB_TOKEN
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
