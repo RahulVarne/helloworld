@@ -38,10 +38,11 @@ jobs:
           echo "<html><body><h1>Hello World from GitHub Actions!</h1><pre>$(cat output.txt)</pre></body></html>" > output/index.html  # Create an HTML file
 
       # Step 5: Deploy to GitHub Pages using the GitHub Pages Deploy Action
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4  # Use the latest stable version
-        with:
-          branch: gh-pages  # The branch to deploy to
-          folder: output    # The folder containing the generated HTML file
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use the GitHub token stored in secrets
+- name: Deploy to GitHub Pages
+  uses: JamesIves/github-pages-deploy-action@v4
+  with:
+    branch: gh-pages  # The branch to deploy to
+    folder: output    # Folder containing the `index.html` file
+  env:
+    GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}  # Use the custom token or default GITHUB_TOKEN
+
