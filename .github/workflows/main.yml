@@ -25,13 +25,34 @@ jobs:
         with:
           python-version: '3.8'
 
-      # Optional: If you don't have any dependencies, you can skip this step.
+      # Optional: Install dependencies if needed
       # - name: Install dependencies
       #   run: |
       #     python -m pip install --upgrade pip
       #     pip install -r requirements.txt
 
-      # Step 3: Run the Hello World script
-      - name: Run Hello World script
+      # Step 3: Run the Hello World script and capture the output
+      - name: Run Hello World script and capture output
         run: |
-          python hello_world.py
+          python hello_world.py > output.txt  # Capture the script output to a file
+          cat output.txt  # Print output in logs for verification
+
+      # Step 4: Create an HTML page to display the output
+      - name: Create HTML page to show output
+        run: |
+          mkdir -p output  # Create a folder for the output
+          echo "<html><body><h1>Hello World from GitHub Actions!</h1><pre>$(cat output.txt)</pre></body></html>" > output/index.html  # Create an HTML file
+
+      # Step 5: Deploy to GitHub Pages using the stored token from secrets
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4.1.2
+        with:
+          branch: gh-pages  # Deploy to the 'gh-pages' branch (GitHub Pages will serve from here)
+          folder: output    # Folder to deploy (contains 'index.html')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}  # Use the GitHub token stored in secrets
+
+      # Optional: Clean up the output folder (if necessary)
+      - name: Clean up
+        run: |
+          rm -rf output
