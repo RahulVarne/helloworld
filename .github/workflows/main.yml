@@ -44,4 +44,4 @@ jobs:
           branch: gh-pages  # The branch to deploy to
           folder: output    # Folder containing the `index.html` file
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}  # Use the custom token or default GITHUB_TOKEN
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use the custom token or default GITHUB_TOKEN
